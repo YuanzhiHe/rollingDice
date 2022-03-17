@@ -171,7 +171,7 @@ def start_game():
                     if AIdice.count(temp) > tempcount[1]:
                         tempcount = (temp, AIdice.count(temp))
                 temp = 2
-                while temp < second:
+                while temp <= second:
                     if AIdice.count(temp) > tempcount[1]:
                         tempcount = (temp, AIdice.count(temp))
                     temp = temp + 1
@@ -181,8 +181,16 @@ def start_game():
                         print('%d个%d' % (first, second))
                 else:
                     if tempcount[1] >= AIdice.count(second) and 0.2 < rand < 0.7:
-                        second = tempcount[0]
-                        print('%d个%d' % (first, second))
+                        if tempcount[0] < second:
+                            second = tempcount[0]
+                            print('%d个%d' % (first + 1, second))
+                            first = first + 1
+                        elif tempcount[0] == second:
+                            print('加一个,%d个%d' % (first + 1, second))
+                            first = first + 1
+                        else:
+                            second = tempcount[0]
+                            print('%d个%d' % (first, second))
                     else:
                         newdice = second
                         while newdice == second:
@@ -190,6 +198,9 @@ def start_game():
                         if newdice < second:
                             second = newdice
                             print('%d个%d' % (first + 1, second))
+                            first = first + 1
+                        elif tempcount[0] == second:
+                            print('加一个,%d个%d' % (first + 1, second))
                             first = first + 1
                         else:
                             second = newdice
