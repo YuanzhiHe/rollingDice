@@ -1,6 +1,6 @@
-## Author: Martin He
-## School of Computer Science, University of Birmingham
-## 2022-3-14
+# Author: Martin He
+# School of Computer Science, University of Birmingham
+# 2022-3-14
 
 import random
 
@@ -10,7 +10,7 @@ kai = False
 callone = False
 
 
-## 摇骰子，顺子重摇
+# 摇骰子，顺子重摇
 def rolling():
     print("-----------开始-----------")
     global diceList
@@ -36,12 +36,12 @@ def start_game():
     global kai, inputnum, callone
     first = 3
     second = 0
-    ## 开始喊，最多10轮
+    # 开始喊，最多10轮
     for i in range(10):
         calling = False
+        # 检测输入是否正常
         while not calling:
             inputnum = input("请喊：")
-
             if inputnum == '开':
                 kai = True
                 calling = True
@@ -70,8 +70,8 @@ def start_game():
         if second == 1:
             callone = True
 
-        rand = random.random()  ## 随机性
-        ## 当电脑没有足够的骰子时有0.2的概率直接开，有0.4的概率喊自己有的其它数，有0.2的概率喊自己没有的数，有豹子喊豹子
+        rand = random.random()  # 随机性
+        # 当骰子是豹子时，只喊自己的数
         if AIdice.count(AIdice[4]) + AIdice.count(1) == 5:
             if second == AIdice[4]:
                 print('加一个,%d个%d' % (first + 1, second))
@@ -82,9 +82,11 @@ def start_game():
             else:
                 print('%d个%d' % (first + 1, second))
                 first = first + 1
+        # 当喊的骰子数已经不可能存在时，直接开
         elif AIdice.count(second) + AIdice.count(1) + 7 < first:
             break
         elif (AIdice.count(second) + AIdice.count(1) - first < 0) and not callone:
+            # 当电脑没有足够的骰子时有0.2的概率直接开
             if rand > 0.8:
                 break
             elif 0.8 > rand > 0.3:
@@ -100,6 +102,7 @@ def start_game():
                     if AIdice.count(temp) > tempcount[1]:
                         tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
                     temp = temp + 1
+                # 当喊到4个以上的骰子数时，有40%概率加一或喊其它自己有的骰子，10%概率吹牛
                 if first >= 4:
                     if tempcount[1] >= AIdice.count(second) + AIdice.count(1) and 0.3 < rand < 0.7:
                         if tempcount[0] < second:
@@ -114,6 +117,7 @@ def start_game():
                             print('%d个%d' % (first, second))
                     else:
                         run = True
+                # 4个以下骰子数时，有30%概率加一或喊其它自己有的骰子，20%概率吹牛
                 else:
                     if tempcount[1] >= AIdice.count(second) + AIdice.count(1) and 0.4 < rand < 0.7:
                         if tempcount[0] < second:
@@ -128,6 +132,7 @@ def start_game():
                             print('%d个%d' % (first, second))
                     else:
                         run = True
+                # 吹牛
                 if run:
                     newdice = second
                     while newdice == second:
@@ -139,16 +144,18 @@ def start_game():
                     else:
                         second = newdice
                         print('%d个%d' % (first, second))
-            ## 剩下0.3的概率
+            # 剩下0.2的概率
             else:
-                ## 没喊过1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
+                # 没喊过1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
                 if second != 1 and AIdice.count(second) + AIdice.count(1) - first >= -1:
                     print('加一个,%d个%d' % (first + 1, second))
                     first = first + 1
                 else:
                     break
         else:
-            ## 喊过1了。如果当前喊的是1，只要手里1的数量不够，就开；如果当前喊的不是1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
+            # 喊过1了。
+            # 如果当前喊的是1，只要手里1的数量不够，40%概率开，60%概率喊其它数
+            # 如果当前喊的不是1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
             if second != 1 and AIdice.count(second) - first >= -1:
                 print('加一个,%d个%d' % (first + 1, second))
                 first = first + 1
@@ -159,7 +166,6 @@ def start_game():
                 temp = second
                 tempcount = (0, 0)
                 first = first + 1
-                run = False
                 while temp <= 6:
                     temp = temp + 1
                     if AIdice.count(temp) > tempcount[1]:
@@ -191,28 +197,28 @@ def start_game():
             else:
                 break
 
-    ## 开
+    # 开
     if not kai:
         print("-----我不信你，你被开了-----")
     else:
         print("-----开-----")
     print("我的骰子是：%s" % AIdice)
 
-    ## 开始计算结果
+    # 开始计算结果
     if not callone:
-        ## 没喊过1,1仍然可以作为任何数
+        # 没喊过1,1仍然可以作为任何数
         ai = AIdice.count(second) + AIdice.count(1)
         player = diceList.count(second) + diceList.count(1)
     elif first == 1:
-        ## 当前喊的数字是1
+        # 当前喊的数字是1
         ai = AIdice.count(1)
         player = diceList.count(1)
     else:
-        ## 喊过1了，1不再作为任何数
+        # 喊过1了，1不再作为任何数
         ai = AIdice.count(second)
         player = diceList.count(second)
 
-    ## 豹子算6个，金钱豹算7个
+    # 豹子算6个，金钱豹算7个
     if AIdice.count(second) == 5:
         ai = ai + 2
     elif ai == 5:
