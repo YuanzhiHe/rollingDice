@@ -82,50 +82,53 @@ def start_game():
             else:
                 print('%d个%d' % (first + 1, second))
                 first = first + 1
-        elif (AIdice.count(second) + AIdice.count(1) - first < 0) and rand > 0.3:
+        elif AIdice.count(second) + AIdice.count(1) + 7 < first:
+            break
+        elif (AIdice.count(second) + AIdice.count(1) - first < 0) and not callone:
             if rand > 0.8:
                 break
-            elif 0.8 > rand > 0.2:
+            elif 0.8 > rand > 0.3:
                 temp = second
-                tempcount = (0,0)
+                tempcount = (0, 0)
                 run = False
-                if second == 1:
-                    first = first + 1
-                    while temp <= 6:
-                        temp = temp + 1
-                        if AIdice.count(temp) > tempcount[1]:
-                            tempcount = (temp, AIdice.count(temp))
-                    temp = 2
-                    while temp < second:
-                        if AIdice.count(temp) > tempcount[1]:
-                            tempcount = (temp, AIdice.count(temp))
-                        temp = temp + 1
-                    if tempcount[1] >= AIdice.count(second) and 0.3 < rand < 0.7:
-                        second = tempcount[0]
-                        print('%d个%d' % (first, second))
-                    else:
-                        run = True
-                else:
-                    while temp <= 6:
-                        temp = temp + 1
-                        if AIdice.count(temp) + AIdice.count(1) > tempcount[1]:
-                            tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
-                    temp = 2
-                    while temp < second:
-                        if AIdice.count(temp) > tempcount[1]:
-                            tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
-                        temp = temp + 1
+                while temp <= 6:
+                    temp = temp + 1
+                    if AIdice.count(temp) + AIdice.count(1) > tempcount[1]:
+                        tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
+                temp = 2
+                while temp <= second:
+                    if AIdice.count(temp) > tempcount[1]:
+                        tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
+                    temp = temp + 1
+                if first >= 4:
                     if tempcount[1] >= AIdice.count(second) + AIdice.count(1) and 0.3 < rand < 0.7:
                         if tempcount[0] < second:
                             second = tempcount[0]
                             print('%d个%d' % (first + 1, second))
+                            first = first + 1
+                        elif tempcount[0] == second:
+                            print('加一个,%d个%d' % (first + 1, second))
                             first = first + 1
                         else:
                             second = tempcount[0]
                             print('%d个%d' % (first, second))
                     else:
                         run = True
-                if run == True:
+                else:
+                    if tempcount[1] >= AIdice.count(second) + AIdice.count(1) and 0.4 < rand < 0.7:
+                        if tempcount[0] < second:
+                            second = tempcount[0]
+                            print('%d个%d' % (first + 1, second))
+                            first = first + 1
+                        elif tempcount[0] == second:
+                            print('加一个,%d个%d' % (first + 1, second))
+                            first = first + 1
+                        else:
+                            second = tempcount[0]
+                            print('%d个%d' % (first, second))
+                    else:
+                        run = True
+                if run:
                     newdice = second
                     while newdice == second:
                         newdice = random.randrange(2, 7)
@@ -136,14 +139,14 @@ def start_game():
                     else:
                         second = newdice
                         print('%d个%d' % (first, second))
-        ## 剩下0.2的概率
-        elif not callone:
-            ## 没喊过1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
-            if second != 1 and AIdice.count(second) + AIdice.count(1) - first >= -2:
-                print('加一个,%d个%d' % (first + 1, second))
-                first = first + 1
+            ## 剩下0.3的概率
             else:
-                break
+                ## 没喊过1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
+                if second != 1 and AIdice.count(second) + AIdice.count(1) - first >= -1:
+                    print('加一个,%d个%d' % (first + 1, second))
+                    first = first + 1
+                else:
+                    break
         else:
             ## 喊过1了。如果当前喊的是1，只要手里1的数量不够，就开；如果当前喊的不是1，如果自己手里的当前数的数量比喊的数量少至多一个以下，加一个
             if second != 1 and AIdice.count(second) - first >= -1:
@@ -152,6 +155,39 @@ def start_game():
             elif second == 1 and AIdice.count(1) - first >= 0:
                 print('加一个,%d个%d' % (first + 1, second))
                 first = first + 1
+            elif 0.8 > rand > 0.2:
+                temp = second
+                tempcount = (0, 0)
+                first = first + 1
+                run = False
+                while temp <= 6:
+                    temp = temp + 1
+                    if AIdice.count(temp) > tempcount[1]:
+                        tempcount = (temp, AIdice.count(temp))
+                temp = 2
+                while temp < second:
+                    if AIdice.count(temp) > tempcount[1]:
+                        tempcount = (temp, AIdice.count(temp))
+                    temp = temp + 1
+                if first >= 3:
+                    if tempcount[1] >= AIdice.count(second):
+                        second = tempcount[0]
+                        print('%d个%d' % (first, second))
+                else:
+                    if tempcount[1] >= AIdice.count(second) and 0.2 < rand < 0.7:
+                        second = tempcount[0]
+                        print('%d个%d' % (first, second))
+                    else:
+                        newdice = second
+                        while newdice == second:
+                            newdice = random.randrange(2, 7)
+                        if newdice < second:
+                            second = newdice
+                            print('%d个%d' % (first + 1, second))
+                            first = first + 1
+                        else:
+                            second = newdice
+                            print('%d个%d' % (first, second))
             else:
                 break
 
@@ -162,70 +198,40 @@ def start_game():
         print("-----开-----")
     print("我的骰子是：%s" % AIdice)
 
-    ## 开始计算结果，豹子算6个，金钱豹算7个
+    ## 开始计算结果
     if not callone:
         ## 没喊过1,1仍然可以作为任何数
         ai = AIdice.count(second) + AIdice.count(1)
-        if ai == AIdice.count(second):
-            ai = ai + 2
-        elif ai == 5:
-            ai = ai + 1
         player = diceList.count(second) + diceList.count(1)
-        if player == diceList.count(second):
-            player = player + 2
-        elif player == 5:
-            player = player + 1
-
-        if not kai:
-            if ai + player < first:
-                print('你输了')
-            else:
-                print('你赢了')
-        else:
-            if ai + player < first:
-                print('你赢了')
-            else:
-                print('你输了')
     elif first == 1:
         ## 当前喊的数字是1
         ai = AIdice.count(1)
-        if ai == 5:
-            ai = ai + 2
         player = diceList.count(1)
-        if player == 5:
-            player = player + 1
-        if kai == False:
-            if ai + player < first:
-                print('你输了')
-            else:
-                print('你赢了')
-        else:
-            if ai + player < first:
-                print('你赢了')
-            else:
-                print('你输了')
     else:
         ## 喊过1了，1不再作为任何数
         ai = AIdice.count(second)
-        if ai == AIdice.count(second):
-            ai = ai + 2
-        elif ai == 5:
-            ai = ai + 1
         player = diceList.count(second)
-        if player == diceList.count(second):
-            player = player + 2
-        elif player == 5:
-            player = player + 1
-        if not kai:
-            if ai + player < first:
-                print('你输了')
-            else:
-                print('你赢了')
+
+    ## 豹子算6个，金钱豹算7个
+    if AIdice.count(second) == 5:
+        ai = ai + 2
+    elif ai == 5:
+        ai = ai + 1
+    if diceList.count(second) == 5:
+        player = player + 2
+    elif player == 5:
+        player = player + 1
+
+    if not kai:
+        if ai + player < first:
+            print('你输了')
         else:
-            if ai + player < first:
-                print('你赢了')
-            else:
-                print('你输了')
+            print('你赢了')
+    else:
+        if ai + player < first:
+            print('你赢了')
+        else:
+            print('你输了')
 
 
 rolling()
