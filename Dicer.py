@@ -90,6 +90,7 @@ def start_game():
                 tempcount = (0,0)
                 run = False
                 if second == 1:
+                    first = first + 1
                     while temp <= 6:
                         temp = temp + 1
                         if AIdice.count(temp) > tempcount[1]:
@@ -100,15 +101,8 @@ def start_game():
                             tempcount = (temp, AIdice.count(temp))
                         temp = temp + 1
                     if tempcount[1] >= AIdice.count(second) and 0.3 < rand < 0.7:
-                        if tempcount[0] < second:
-                            second = tempcount[0]
-                            print('%d个%d' % (first + 1, second))
-                            first = first + 1
-                        else:
-                            if tempcount[0] == 1:
-                                callone = True
-                            second = tempcount[0]
-                            print('%d个%d' % (first, second))
+                        second = tempcount[0]
+                        print('%d个%d' % (first, second))
                     else:
                         run = True
                 else:
@@ -127,8 +121,6 @@ def start_game():
                             print('%d个%d' % (first + 1, second))
                             first = first + 1
                         else:
-                            if tempcount[0] == 1:
-                                callone = True
                             second = tempcount[0]
                             print('%d个%d' % (first, second))
                     else:
