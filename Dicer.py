@@ -28,7 +28,7 @@ def rolling():
     return diceList, AIdice
 
 def start_game():
-    AIwin = True
+    AIwin = False
     wintime = 0
     # 每局会让失败方先喊
     for k in range(100):
@@ -79,12 +79,12 @@ def start_game():
             else:
                 temp_rand = random.random()
                 tempcount = (0, 0)
-                temp = 0
+                temp = 1
                 while temp <= 6:
                     temp = temp + 1
                     if AIdice.count(temp) + AIdice.count(1) > tempcount[1]:
                         tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
-                if AIdice[0] == '1' and temp_rand > 0.85:
+                if AIdice[0] == 1 and temp_rand > 0.85:
                     first = 2
                     second = 1
                     print('2个1')
@@ -126,7 +126,7 @@ def start_game():
                         temp = second
                         tempcount = (0, 0)
                         run = False
-                        while temp <= 6:
+                        while temp < 6:
                             temp = temp + 1
                             if AIdice.count(temp) + AIdice.count(1) > tempcount[1]:
                                 tempcount = (temp, AIdice.count(temp) + AIdice.count(1))
@@ -199,7 +199,7 @@ def start_game():
                         temp = second
                         tempcount = (0, 0)
                         first = first + 1
-                        while temp <= 6:
+                        while temp < 6:
                             temp = temp + 1
                             if AIdice.count(temp) > tempcount[1]:
                                 tempcount = (temp, AIdice.count(temp))
@@ -209,9 +209,8 @@ def start_game():
                                 tempcount = (temp, AIdice.count(temp))
                             temp = temp + 1
                         if first >= 3:
-                            if tempcount[1] >= AIdice.count(second):
-                                second = tempcount[0]
-                                print('%d个%d' % (first, second))
+                            second = tempcount[0]
+                            print('%d个%d' % (first, second))
                         else:
                             if tempcount[1] >= AIdice.count(second) and 0.2 < rand < 0.7:
                                 if tempcount[0] < second:
