@@ -28,7 +28,7 @@ def rolling():
     return diceList, AIdice
 
 def start_game():
-    AIwin = False
+    AIwin = True
     wintime = 0
     # 每局会让失败方先喊
     for k in range(100):
@@ -87,6 +87,7 @@ def start_game():
                 if AIdice[0] == 1 and temp_rand > 0.85:
                     first = 2
                     second = 1
+                    callone = True
                     print('2个1')
                 elif temp_rand < 0.6:
                     second = tempcount[0]
@@ -107,13 +108,13 @@ def start_game():
                 # 当骰子是豹子时，只喊自己的数
                 if AIdice.count(AIdice[4]) + AIdice.count(1) == 5 or AIdice.count(AIdice[4]) + AIdice.count(1) == 10:
                     if second == AIdice[4]:
-                        print('加一个,%d个%d' % (first + 1, second))
+                        print('加一个,%d个%d' % (first + 1, AIdice[4]))
                         first = first + 1
                     elif second < AIdice[4]:
-                        print('%d个%d' % (first, second))
+                        print('%d个%d' % (first, AIdice[4]))
                         first = first + 1
                     else:
-                        print('%d个%d' % (first + 1, second))
+                        print('%d个%d' % (first + 1, AIdice[4]))
                         first = first + 1
                 # 当喊的骰子数已经不可能存在时，直接开
                 elif AIdice.count(second) + AIdice.count(1) + 7 < first:
